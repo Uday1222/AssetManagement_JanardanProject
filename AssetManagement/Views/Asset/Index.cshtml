@@ -1,0 +1,53 @@
+﻿@model IEnumerable<AssetManagement.Models.Asset>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Puchased Assets</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SerialNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchasedBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SerialNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchasedBy)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.AssetId}) |
+                    @Html.ActionLink("Details", "Details", new { id=item.AssetId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.AssetId})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -80,5 +80,11 @@ namespace AssetManagement.Repository
         {
             await _db.SaveChangesAsync();
         }
+
+        public async Task UpdateEntityAsync(T entity)
+        {
+            dbSet.Update(entity);
+            await SaveAsync();
+        }
     }
 }

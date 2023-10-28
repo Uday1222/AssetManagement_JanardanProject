@@ -12,5 +12,9 @@ namespace AssetManagement.Data
 
         }
         public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Asset> Assets { get; set; }
+
+        public DbSet<AssetDetails> AssetDetails { get; set; }
     }
 }

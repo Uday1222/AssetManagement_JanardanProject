@@ -13,9 +13,9 @@ namespace AssetManagement.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IRepository<Employee> _empRepo;
+        private readonly IEmployeeRepository _empRepo;
 
-        public EmployeeController(IRepository<Employee> empRepo)
+        public EmployeeController(IEmployeeRepository empRepo)
         {
             _empRepo = empRepo;
         }
@@ -34,9 +34,10 @@ namespace AssetManagement.Controllers
         }
 
         // GET: EmployeeController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var entitity = await _empRepo.Get(x => x.EmpId == id);
+            return View(entitity);
         }
 
         // GET: EmployeeController/Create
@@ -62,18 +63,20 @@ namespace AssetManagement.Controllers
         }
 
         // GET: EmployeeController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var entitity = await _empRepo.Get(x => x.EmpId == id);
+            return View(entitity);
         }
 
         // POST: EmployeeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, Employee entity)
         {
             try
             {
+                await _empRepo.Update(entity);
                 return RedirectToAction(nameof(Index));
             }
             catch

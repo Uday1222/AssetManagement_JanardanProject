@@ -31,15 +31,15 @@
                 @Html.DisplayFor(modelItem => item.EmpName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Edit", "Edit", new { id=item.EmpId }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.EmpId }) |
                 @Html.ActionLink("Delete", "Delete", new { id=item.EmpId })
             </td>
         </tr>
 }
     </tbody>
 </table>
-<button id="exportButton">Export to Excel</button>
+<button btn btn-primary id="exportButton">Export to Excel</button>
 
 @section scripts {
     <script>
