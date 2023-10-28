@@ -1,6 +1,8 @@
-﻿using AssetManagement.Models;
+﻿using AssetManagement.Migrations;
+using AssetManagement.Models;
 using AssetManagement.Models.Dto;
 using AssetManagement.Repository.IRepository;
+using DocumentFormat.OpenXml.Vml.Office;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,9 +27,11 @@ namespace AssetManagement.Controllers
         }
 
         // GET: AssetDetailsController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var item = await _repository.Get(x => x.AssetDetailsId == id);
+
+            return View(item);
         }
 
         // GET: AssetDetailsController/Create
@@ -38,7 +42,7 @@ namespace AssetManagement.Controllers
         {
             //new SelectListItem { Text = "Available", Value = "Available" },
             new SelectListItem { Text = "Received", Value = "Received" },
-            new SelectListItem { Text = "Return", Value = "Return" }
+            new SelectListItem { Text = "Returned", Value = "Returned" }
         };
             assetDetailsView.Status = statusOptions;
             return View(assetDetailsView);
@@ -83,39 +87,76 @@ namespace AssetManagement.Controllers
         }
 
         // GET: AssetDetailsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            AssetDetailsViewDto assetDetailsView = new AssetDetailsViewDto();
+            var statusOptions = new List<SelectListItem>
+        {
+            //new SelectListItem { Text = "Available", Value = "Available" },
+            new SelectListItem { Text = "Received", Value = "Received" },
+            new SelectListItem { Text = "Returned", Value = "Returned" }
+        };
+            assetDetailsView.Status = statusOptions;
+
+            var item = await _repository.Get(x => x.AssetDetailsId == id);
+            assetDetailsView.SerialNo = item.SerialNo;
+            assetDetailsView.AdditionalDetails = item.AdditionalDetails;
+            assetDetailsView.Comments = item.Comments;
+            assetDetailsView.GivenDate = item.GivenDate;
+            assetDetailsView.EmpId = item.EmpId;
+            assetDetailsView.EmpName = item.EmpName;
+            assetDetailsView.AssetDetailsId = item.AssetDetailsId;
+
+            return View(assetDetailsView);
         }
 
         // POST: AssetDetailsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, AssetDetailsViewDto entity)
         {
             try
             {
+                AssetDetails assetDetails = new AssetDetails();
+                assetDetails.AssetDetailsId = id;
+                assetDetails.SerialNo = entity.SerialNo;
+                assetDetails.Status = entity.SelectedStatus;
+                assetDetails.AdditionalDetails = entity.AdditionalDetails;
+                assetDetails.EmpId = entity.EmpId;
+                assetDetails.EmpName = entity.EmpName;
+                assetDetails.GivenDate = entity.GivenDate;
+                assetDetails.Comments = entity.Comments;
+
+                await _repository.UpdateEntityAsync(assetDetails);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(entity);
             }
         }
 
         // GET: AssetDetailsController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var item = await _repository.Get(x => x.AssetDetailsId == id);
+
+            return View(item);
         }
 
         // POST: AssetDetailsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
+                var item = await _repository.Get(x => x.AssetDetailsId == id);
+
+                if(item != null)
+                {
+                   await _repository.RemoveAsync(item);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch

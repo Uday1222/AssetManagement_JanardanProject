@@ -13,6 +13,9 @@ namespace AssetManagement.Models.Dto
                 new SelectListItem {Text = "Return", Value = "Return"},
             };
         }
+
+        public int AssetDetailsId { get; set; }
+
         public string SerialNo { get; set; }
 
         public string EmpId { get; set; }

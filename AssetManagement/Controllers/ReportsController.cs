@@ -10,10 +10,12 @@ namespace AssetManagement.Controllers
     public class ReportsController : Controller
     {
         private readonly IRepository<Asset> _assetRepo;
+        private readonly IRepository<AssetDetails> _assetDetailsRepo;
 
-        public ReportsController(IRepository<Asset> assetRepo)
+        public ReportsController(IRepository<Asset> assetRepo, IRepository<AssetDetails> assetDetailsRepo)
         {
             _assetRepo = assetRepo;
+            _assetDetailsRepo = assetDetailsRepo;
         }
 
         public IActionResult Index()
@@ -25,10 +27,37 @@ namespace AssetManagement.Controllers
         {
             var assets = await _assetRepo.GetAll(); // Retrieve employees from your database
 
-            var availableAssets = assets.Where(x => x.Status == "Available").ToList();
+            var availableAssets = assets.Where(x => x.Status == "Available" || x.Status == "Returned").ToList();
 
-            // Create Excel package
             return ExportToExcel(availableAssets, "availableAssets", "availableAssets.xlsx");
+        }
+
+        public async Task<FileResult> PurchasedReport()
+        {
+            var entity = await _assetRepo.GetAll();
+            return ExportToExcel(entity, "PurchasedReport", "PurchasedReport.xlsx");
+        }
+
+        public async Task<FileResult> GivenToEmployeeReport()
+        {
+            var assets = await _assetRepo.GetAll();
+            var statusOfAssets = await _assetDetailsRepo.GetAll();
+
+            var result = (from asset in assets
+                         join details in statusOfAssets
+                         on asset.SerialNo equals details.SerialNo
+                         select new
+                         {
+                             GivenDate = details.GivenDate,
+                             ItemType = asset.ItemType,
+                             Model = asset.Model,
+                             SerialNo = asset.SerialNo,
+                             EmpId = details.EmpId,
+                             EmpName = details.EmpName,
+                             Stats = details.Status
+                         }).ToList();
+
+            return ExportToExcel(result, "GivenToEmployeeReport", "GivenToEmployeeReport.xlsx");
         }
 
         //public async Task<FileResult> ExportToExcel()
