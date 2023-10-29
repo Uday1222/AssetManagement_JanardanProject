@@ -43,7 +43,7 @@ namespace AssetManagement.Controllers
             var assets = await _assetRepo.GetAll();
             var statusOfAssets = await _assetDetailsRepo.GetAll();
 
-            var result = (from asset in assets
+            var result = (from asset in assets.Where(x => x.Status == "Received")
                          join details in statusOfAssets
                          on asset.SerialNo equals details.SerialNo
                          select new
