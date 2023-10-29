@@ -8,17 +8,14 @@ namespace AssetManagement.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IRepository<Employee> _employeeRepo;
 
-        public HomeController(ILogger<HomeController> logger, IRepository<Employee> employeeRepo)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _employeeRepo = employeeRepo;
         }
 
         public async Task<IActionResult> Index()
         {
-            var result = await _employeeRepo.GetAll();
             return View();
 
         }
