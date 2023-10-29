@@ -25,7 +25,7 @@ namespace AssetManagement.Controllers
 
         public async Task<FileResult> AssetsAvailable()
         {
-            var assets = await _assetRepo.GetAll(); // Retrieve employees from your database
+            var assets = await _assetRepo.GetAll();
 
             var availableAssets = assets.Where(x => x.Status == "Available" || x.Status == "Returned").ToList();
 

@@ -23,13 +23,6 @@ namespace AssetManagement.Controllers
         public async Task<ActionResult> Index()
         {
             var list = await _empRepo.GetAll();
-            //List<EmployeeDto> employeeDtos = new();
-            //list.ForEach(x =>
-            //{
-            //    EmployeeDto employeeDtos1 = new EmployeeDto();
-            //    employeeDtos1.EmpName = x.EmpName;
-            //    employeeDtos.Add(employeeDtos1);
-            //});
             return View(list);
         }
 
