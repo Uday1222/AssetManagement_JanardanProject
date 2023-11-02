@@ -1,3 +1,4 @@
+using AssetManagement;
 using AssetManagement.Data;
 using AssetManagement.Repository;
 using AssetManagement.Repository.IRepository;
@@ -15,6 +16,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+//builder.Services.AddKendo();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();

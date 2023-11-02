@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AssetManagement.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2023.2.614/styles/kendo.default.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2023.2.614/js/kendo.all.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.614/js/kendo.all.min.js"></script>
+
 </head>
 <body>
     <header>
@@ -37,6 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Vendor" asp-action="Index">Vendor</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -56,6 +65,14 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Add these script references at the end of the body tag -->
+    @*<script src="https://kendo.cdn.telerik.com/2023.2.914/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.914/js/kendo.all.min.js"></script>
+
+    <!-- Add these stylesheet references in the head tag -->
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2023.2.914/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2023.2.914/styles/kendo.default.min.css" />*@
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

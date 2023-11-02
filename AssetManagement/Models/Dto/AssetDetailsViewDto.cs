@@ -10,7 +10,7 @@ namespace AssetManagement.Models.Dto
             Status = new List<SelectListItem>
             {
                 new SelectListItem {Text = "Received", Value = "Received"},
-                new SelectListItem {Text = "Return", Value = "Return"},
+                new SelectListItem {Text = "Returned", Value = "Returned"},
             };
         }
 

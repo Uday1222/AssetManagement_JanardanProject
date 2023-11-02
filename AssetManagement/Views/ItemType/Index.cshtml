@@ -1,0 +1,41 @@
+﻿@model IEnumerable<AssetManagement.Models.Dto.ItemTypeViewDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Item Types</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemType)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id=item.ItemTypeId }) |
+                    @Html.ActionLink("Details", "Details", new { id= item.ItemTypeId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.ItemTypeId  })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

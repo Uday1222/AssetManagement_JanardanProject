@@ -27,7 +27,7 @@ namespace AssetManagement.Controllers
         {
             var assets = await _assetRepo.GetAll();
 
-            var availableAssets = assets.Where(x => x.Status == "Available" || x.Status == "Returned").ToList();
+            var availableAssets = assets/*.Where(x => x.Status == "Available" || x.Status == "Returned").ToList()*/;
 
             return ExportToExcel(availableAssets, "availableAssets", "availableAssets.xlsx");
         }
@@ -43,21 +43,21 @@ namespace AssetManagement.Controllers
             var assets = await _assetRepo.GetAll();
             var statusOfAssets = await _assetDetailsRepo.GetAll();
 
-            var result = (from asset in assets.Where(x => x.Status == "Received")
-                         join details in statusOfAssets
-                         on asset.SerialNo equals details.SerialNo
-                         select new
-                         {
-                             GivenDate = details.GivenDate,
-                             ItemType = asset.ItemType,
-                             Model = asset.Model,
-                             SerialNo = asset.SerialNo,
-                             EmpId = details.EmpId,
-                             EmpName = details.EmpName,
-                             Stats = details.Status
-                         }).ToList();
+            //var result = (from asset in assets.Where(x => x.Status == "Received")
+            //             join details in statusOfAssets
+            //             on asset.ItemName equals details.
+            //             select new
+            //             {
+            //                 GivenDate = details.GivenDate,
+            //                 ItemType = asset.ItemType,
+            //                 Model = asset.Model,
+            //                 SerialNo = asset.SerialNo,
+            //                 EmpId = details.EmpId,
+            //                 EmpName = details.EmpName,
+            //                 Stats = details.Status
+            //             }).ToList();
 
-            return ExportToExcel(result, "GivenToEmployeeReport", "GivenToEmployeeReport.xlsx");
+            return ExportToExcel(assets, "GivenToEmployeeReport", "GivenToEmployeeReport.xlsx");
         }
 
         //public async Task<FileResult> ExportToExcel()

@@ -1,10 +1,10 @@
-﻿@model IEnumerable<AssetManagement.Models.Asset>
+﻿@model IEnumerable<AssetManagement.Models.Dto.AssetViewDto>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Puchased Assets</h1>
+<h1>Assets Purchased</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,16 +13,49 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Model)
+                @Html.DisplayNameFor(model => model.AssetId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ItemType)
+                @Html.DisplayNameFor(model => model.LastOrderDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SerialNo)
+                @Html.DisplayNameFor(model => model.ItemName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PurchasedBy)
+                @Html.DisplayNameFor(model => model.Vendor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CostPerItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReorderLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DaysPerReorder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemReorderQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemDiscontinuedStatus)
             </th>
             <th></th>
         </tr>
@@ -31,21 +64,54 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Model)
+                @Html.DisplayFor(modelItem => item.AssetId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ItemType)
+                @Html.DisplayFor(modelItem => item.LastOrderDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SerialNo)
+                @Html.DisplayFor(modelItem => item.ItemName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PurchasedBy)
+                @Html.DisplayFor(modelItem => item.Vendor)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.AssetId}) |
+                @Html.DisplayFor(modelItem => item.VendorContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostPerItem)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReorderLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DaysPerReorder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemReorderQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemDiscontinuedStatus)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.AssetId }) |
                     @Html.ActionLink("Details", "Details", new { id=item.AssetId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.AssetId})
+                    @Html.ActionLink("Delete", "Delete", new { id=item.AssetId })
             </td>
         </tr>
 }

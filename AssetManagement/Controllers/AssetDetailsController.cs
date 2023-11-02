@@ -2,6 +2,7 @@
 using AssetManagement.Models;
 using AssetManagement.Models.Dto;
 using AssetManagement.Repository.IRepository;
+using AutoMapper;
 using DocumentFormat.OpenXml.Vml.Office;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace AssetManagement.Controllers
     {
         private readonly IRepository<AssetDetails> _repository;
         private readonly IRepository<Asset> _assetRepo;
+        private readonly IMapper _mapper;
 
-        public AssetDetailsController(IRepository<AssetDetails> repository, IRepository<Asset> assetRepo)
+        public AssetDetailsController(IRepository<AssetDetails> repository, IRepository<Asset> assetRepo, IMapper mapper)
         {
             _repository = repository;
             _assetRepo = assetRepo;
+            _mapper = mapper;
         }
         // GET: AssetDetailsController
         public async Task<ActionResult> Index()
@@ -55,29 +58,26 @@ namespace AssetManagement.Controllers
         {
             try
             {
-                var item = await _assetRepo.Get(x => x.SerialNo == entity.SerialNo);
+                //var item = await _assetRepo.Get(x => x.SerialNo == entity.SerialNo);
 
-                if (item != null)
-                {
+                //if (item != null)
+                //{
                     AssetDetails assetDetails = new AssetDetails();
-                    assetDetails.SerialNo = entity.SerialNo;
+
+                    assetDetails = _mapper.Map<AssetDetails>(entity);
+
                     assetDetails.Status = entity.SelectedStatus;
-                    assetDetails.AdditionalDetails = entity.AdditionalDetails;
-                    assetDetails.EmpId = entity.EmpId;
-                    assetDetails.EmpName = entity.EmpName;
-                    assetDetails.GivenDate = entity.GivenDate;
-                    assetDetails.Comments = entity.Comments;
 
                     await _repository.CreateAsync(assetDetails);
 
-                    item.Status = entity.SelectedStatus;
-                    await _assetRepo.UpdateEntityAsync(item);
-                }
-                else
-                {
-                    ModelState.AddModelError("SerialNo", "Asset is not available");
-                    return View(new AssetDetailsViewDto());
-                }
+                    //item.Status = entity.SelectedStatus;
+                    //await _assetRepo.UpdateEntityAsync(item);
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("SerialNo", "Asset is not available");
+                //    return View(new AssetDetailsViewDto());
+                //}
                 return RedirectToAction(nameof(Index));
             }
             catch
