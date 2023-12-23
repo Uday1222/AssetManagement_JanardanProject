@@ -16,7 +16,21 @@ namespace AssetManagement.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View();
+            var user = HttpContext.Session.Get("User");
+            if(user != null)
+            {
+                if(user.ToString() == "")
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            //var result = await _employeeRepo.GetAll();
+            
 
         }
 
