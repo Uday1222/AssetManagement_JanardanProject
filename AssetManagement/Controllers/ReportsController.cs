@@ -4,9 +4,11 @@ using DocumentFormat.OpenXml;
 using Microsoft.AspNetCore.Mvc;
 using AssetManagement.Repository.IRepository;
 using AssetManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AssetManagement.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ReportsController : Controller
     {
         private readonly IRepository<Asset> _assetRepo;

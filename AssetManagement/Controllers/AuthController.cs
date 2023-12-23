@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Security.Claims;
 using AssetManagement.Models.Dto;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Http;
 
 namespace AssetManagement.Controllers
 {
@@ -34,11 +35,17 @@ namespace AssetManagement.Controllers
 
                 var user = await _userRepo.Get(x => x.UserName == loginRequestDTO.UserName);
 
-                if(user != null)
+                if (user != null)
                 {
-                    if(loginRequestDTO.UserName == user.UserName && loginRequestDTO.Password == user.Password)
+                    if (loginRequestDTO.UserName == user.UserName && loginRequestDTO.Password == user.Password)
                     {
-                        HttpContext.Session.SetString("User", user.UserName);
+                        var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                        identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
+                        identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
+                        var principal = new ClaimsPrincipal(identity);
+
+                        await HttpContext.SignInAsync(principal);
+                        HttpContext.Session.SetString("User", user.Role);
                     }
 
                     return RedirectToAction("Index", "Home");
@@ -75,23 +82,35 @@ namespace AssetManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(User user)
         {
-                try
+            try
+            {
+                if (user != null && (user.Role != "Admin" && user.Role != "Employee"))
                 {
-                    await _userRepo.CreateAsync(user);
-                    TempData["success"] = "Registered Successfully";
-                    return RedirectToAction("Login", "Auth");
-                }
-                catch (Exception ex)
-                {
-                    TempData["error"] = ex.Message;
+                    TempData["error"] = "Allowed Roles: Admin or Employee";
                     return View();
                 }
+
+                await _userRepo.CreateAsync(user);
+                TempData["success"] = "Registered Successfully";
+                return RedirectToAction("Login", "Auth");
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return View();
+            }
         }
-  
+
         public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync();
             HttpContext.Session.SetString("User", "");
             return RedirectToAction("Login");
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
 

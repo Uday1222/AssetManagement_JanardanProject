@@ -3,6 +3,7 @@ using AssetManagement.Models.Dto;
 using AssetManagement.Repository.IRepository;
 using AutoMapper;
 using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AssetManagement.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class VendorController : Controller
     {
         private readonly IMapper _mapper;

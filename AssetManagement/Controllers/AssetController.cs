@@ -3,11 +3,13 @@ using AssetManagement.Models.Dto;
 using AssetManagement.Repository.IRepository;
 using AutoMapper;
 using DocumentFormat.OpenXml.Vml.Office;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssetManagement.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AssetController : Controller
     {
         private readonly IRepository<Asset> _assetRepo;
@@ -19,6 +21,8 @@ namespace AssetManagement.Controllers
             _mapper = mapper;
         }
         // GET: AssetController
+
+        
         public async Task<ActionResult> Index()
         {
             var entity = await _assetRepo.GetAll();
@@ -54,6 +58,7 @@ namespace AssetManagement.Controllers
                 Asset asset = new Asset();
                 asset = _mapper.Map<Asset>(entity);
                 await _assetRepo.CreateAsync(asset);
+                TempData["success"] = "Asset Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
             catch

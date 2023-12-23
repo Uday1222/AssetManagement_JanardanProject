@@ -2,6 +2,7 @@ using AssetManagement;
 using AssetManagement.Data;
 using AssetManagement.Repository;
 using AssetManagement.Repository.IRepository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,16 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(optios =>
+                {
+                    optios.Cookie.HttpOnly = true;
+                    optios.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    optios.AccessDeniedPath = "/Auth/AccessDenied";
+                    optios.LoginPath = "/Auth/Login";
+                    optios.SlidingExpiration = true;
+                });
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -47,6 +58,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
 app.MapControllerRoute(
